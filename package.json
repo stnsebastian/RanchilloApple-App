@@ -1,0 +1,15 @@
+{
+  "name": "ranchillo-ventas-apple",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Sistema de Control de Ventas Ranchillo optimizado para celulares Apple (iPhone / iPad / iOS PWA)",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
