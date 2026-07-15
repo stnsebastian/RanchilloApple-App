@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ranchillo-apple-cache-v3';
+const CACHE_NAME = 'ranchillo-apple-cache-v4';
 const ASSETS = [
     './',
     './index.html',
@@ -39,21 +39,27 @@ self.addEventListener('fetch', event => {
         caches.match(event.request)
             .then(response => {
                 if (response) {
-                    return response;
+                    return response; // Devuelve del caché
                 }
                 
+                // Si no está en caché, va a la red
                 return fetch(event.request).then(networkResponse => {
-                    if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+                    if (!networkResponse || networkResponse.status !== 200) {
                         return networkResponse;
                     }
                     
-                    const responseToCache = networkResponse.clone();
-                    caches.open(CACHE_NAME).then(cache => {
-                        cache.put(event.request, responseToCache);
-                    });
+                    // Permitimos guardar en caché recursos locales (basic), cors (como fuentes) y opaque (no-cors)
+                    const tiposPermitidos = ['basic', 'cors', 'opaque'];
+                    if (tiposPermitidos.includes(networkResponse.type)) {
+                        const responseToCache = networkResponse.clone();
+                        caches.open(CACHE_NAME).then(cache => {
+                            cache.put(event.request, responseToCache);
+                        });
+                    }
                     
                     return networkResponse;
                 }).catch(() => {
+                    // Fallback para cuando esté offline y no haya caché
                     if (event.request.mode === 'navigate') {
                         return caches.match('./index.html');
                     }
