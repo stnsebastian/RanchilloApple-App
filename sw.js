@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ranchillo-apple-cache-v4';
+const CACHE_NAME = 'ranchillo-apple-cache-v5';
 const ASSETS = [
     './',
     './index.html',
